@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fracture Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 400px;
+            background-color: #111111;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        .upload-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-section {
+            text-align: center;
+        }
+
+        .annotated-image {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .highlight {
+            border: 2px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fracture Detection</h1>
+        <div class="upload-section">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" class="file-input">
+                <input type="submit" value="Upload" class="upload-button">
+            </form>
+        </div>
+        <div id="result" class="image-section">
+            <!-- Result will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('form').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const resultDiv = document.getElementById('result');
+            if (response.headers.get('Content-Type').includes('application/json')) {
+                const json = await response.json();
+                resultDiv.innerText = json.message;
+            } else {
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const img = new Image();
+                img.onload = function() {
+                    resultDiv.innerHTML = `<img src="${url}" alt="Annotated Image" class="annotated-image">`;
+                    if (img.naturalWidth === 0) {
+                        resultDiv.firstChild.classList.add('highlight');
+                    }
+                };
+                img.src = url;
+            }
+        }
+    </script>
+</body>
+</html>

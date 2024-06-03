@@ -1,0 +1,32 @@
+# YOLOv7 Configuration File
+
+# Number of classes (including background)
+nc: 2  # Change this if you have more than one class
+
+# Anchors
+anchors: 4  # Number of anchors to use
+anchor_step: 2
+anchors:
+  - [10,13, 16,30, 33,23]  # Example anchor values
+  - [30,61, 62,45, 59,119]
+  - [116,90, 156,198, 373,326]
+
+# Input image size
+img_size: 416  # Change this if you have a different input size
+
+# Batch size and Subdivision
+batch_size: 16
+subdivisions: 2
+
+# Training hyperparameters
+epochs: 50
+learning_rate: 0.001
+momentum: 0.937
+weight_decay: 0.0005
+
+# Schedule Policy
+scheduler:
+  policy: cosine
+  warmup_epochs: 0
+  warmup_lr: 0
+  lr0: 0.01
