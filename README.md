@@ -101,7 +101,7 @@ Welcome to the Bone Fracture Detection project! This project utilizes the YOLO (
 ---
 
 ## Contributors
-- [Your Name](https://github.com/your-profile)
+- [PRAMOTH KUMAR](https://github.com/pramothkumarm)
 
 ---
 
